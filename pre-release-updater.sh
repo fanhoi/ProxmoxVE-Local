@@ -6,7 +6,7 @@
 # versions (v1.0.0-pre1, v1.0.0-pre2, etc.) for testing purposes.
 #
 # Installation:
-#   curl -fsSL https://github.com/community-scripts/ProxmoxVE-Local/releases/download/v1.0.0-pre1/pre-release-updater.sh -o /opt/pve-local-prerelease-updater.sh
+#   curl -fsSL https://github.com/fanhoi/ProxmoxVE-Local/releases/download/v1.0.0-pre1/pre-release-updater.sh -o /opt/pve-local-prerelease-updater.sh
 #   chmod +x /opt/pve-local-prerelease-updater.sh
 #
 # Usage:
@@ -21,7 +21,7 @@
 set -euo pipefail
 
 # --- Configuration -----------------------------------------------------------
-REPO_OWNER="community-scripts"
+REPO_OWNER="fanhoi"
 REPO_NAME="ProxmoxVE-Local"
 GITHUB_API="https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}"
 INSTALL_DIR="/opt/ProxmoxVE-Local"

@@ -3,12 +3,13 @@ import { join } from 'path';
 import { writeFile, mkdir, access, readFile, unlink } from 'fs/promises';
 import { downloadRawFile } from '../lib/gitProvider/index.js';
 
+// Этот сервис используется для загрузки скриптов из GitHub репозитория и их адаптации для локального запуска.
 export class ScriptDownloaderService {
   constructor() {
     /** @type {string} */
     this.scriptsDirectory = join(process.cwd(), 'scripts');
     /** @type {string} */
-    this.repoUrl = process.env.REPO_URL || 'https://github.com/community-scripts/ProxmoxVE';
+    this.repoUrl = process.env.REPO_URL || 'https://github.com/fanhoi/ProxmoxVE';
   }
 
   /**
@@ -25,7 +26,7 @@ export class ScriptDownloaderService {
   initializeConfig() {
     // Re-initialize if needed (for environment changes)
     this.scriptsDirectory = join(process.cwd(), 'scripts');
-    this.repoUrl = process.env.REPO_URL || 'https://github.com/community-scripts/ProxmoxVE';
+    this.repoUrl = process.env.REPO_URL || 'https://github.com/fanhoi/ProxmoxVE';
   }
 
   /**
@@ -195,8 +196,8 @@ export class ScriptDownloaderService {
    * @returns {string}
    */
   modifyScriptContent(content) {
-    // Replace the build.func source line
-    const oldPattern = /source <\(curl -fsSL https:\/\/raw\.githubusercontent\.com\/community-scripts\/ProxmoxVE\/main\/misc\/build\.func\)/g;
+    // Replace the build.func source line (supports both community-scripts and fanhoi fork)
+    const oldPattern = /source <\(curl -fsSL https:\/\/raw\.githubusercontent\.com\/(community-scripts|fanhoi)\/ProxmoxVE\/main\/misc\/build\.func\)/g;
     const newPattern = 'SCRIPT_DIR="$(dirname "$0")" \nsource "$SCRIPT_DIR/../core/build.func"';
 
     return content.replace(oldPattern, newPattern);

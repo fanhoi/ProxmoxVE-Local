@@ -2,13 +2,14 @@
 import { prisma } from '../db.js';
 import { isValidRepositoryUrl, REPO_URL_ERROR_MESSAGE } from '../lib/repositoryUrlValidation.js';
 
+// Этот класс предоставляет сервисы для управления репозиториями скриптов в базе данных.
 class RepositoryService {
   /**
    * Initialize default repositories if they don't exist
    */
   async initializeDefaultRepositories() {
-    const mainRepoUrl = 'https://github.com/community-scripts/ProxmoxVE';
-    const devRepoUrl = 'https://github.com/community-scripts/ProxmoxVED';
+    const mainRepoUrl = 'https://github.com/fanhoi/ProxmoxVE';
+    const devRepoUrl = 'https://github.com/fanhoi/ProxmoxVED';
 
     // Check if repositories already exist
     const existingRepos = await prisma.repository.findMany({

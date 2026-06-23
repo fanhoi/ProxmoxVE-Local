@@ -30,6 +30,7 @@ async function fetchGitHubAPI(url: string) {
   return fetch(url, { headers });
 }
 
+// Этот роутер используется для управления обновлениями приложения и получения информации о релизах из репозитория GitHub.
 export const versionRouter = createTRPCRouter({
   // Get current local version
   getCurrentVersion: publicProcedure
@@ -58,14 +59,14 @@ export const versionRouter = createTRPCRouter({
         let release: GitHubRelease;
 
         if (allowPrerelease) {
-          const response = await fetchGitHubAPI('https://api.github.com/repos/community-scripts/ProxmoxVE-Local/releases');
+          const response = await fetchGitHubAPI('https://api.github.com/repos/fanhoi/ProxmoxVE-Local/releases');
           if (!response.ok) throw new Error(`GitHub API error: ${response.status}`);
           const releases: GitHubRelease[] = await response.json();
           const sorted = releases.sort((a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime());
           if (!sorted[0]) throw new Error('No releases found');
           release = sorted[0];
         } else {
-          const response = await fetchGitHubAPI('https://api.github.com/repos/community-scripts/ProxmoxVE-Local/releases/latest');
+          const response = await fetchGitHubAPI('https://api.github.com/repos/fanhoi/ProxmoxVE-Local/releases/latest');
           if (!response.ok) throw new Error(`GitHub API error: ${response.status}`);
           release = await response.json();
         }
@@ -100,14 +101,14 @@ export const versionRouter = createTRPCRouter({
         let release: GitHubRelease;
 
         if (allowPrerelease) {
-          const response = await fetchGitHubAPI('https://api.github.com/repos/community-scripts/ProxmoxVE-Local/releases');
+          const response = await fetchGitHubAPI('https://api.github.com/repos/fanhoi/ProxmoxVE-Local/releases');
           if (!response.ok) throw new Error(`GitHub API error: ${response.status}`);
           const releases: GitHubRelease[] = await response.json();
           const sorted = releases.sort((a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime());
           if (!sorted[0]) throw new Error('No releases found');
           release = sorted[0];
         } else {
-          const response = await fetchGitHubAPI('https://api.github.com/repos/community-scripts/ProxmoxVE-Local/releases/latest');
+          const response = await fetchGitHubAPI('https://api.github.com/repos/fanhoi/ProxmoxVE-Local/releases/latest');
           if (!response.ok) throw new Error(`GitHub API error: ${response.status}`);
           release = await response.json();
         }
@@ -148,7 +149,7 @@ export const versionRouter = createTRPCRouter({
   getAllReleases: publicProcedure
     .query(async () => {
       try {
-        const response = await fetchGitHubAPI('https://api.github.com/repos/community-scripts/ProxmoxVE-Local/releases');
+        const response = await fetchGitHubAPI('https://api.github.com/repos/fanhoi/ProxmoxVE-Local/releases');
         
         if (!response.ok) {
           throw new Error(`GitHub API error: ${response.status}`);
@@ -266,7 +267,7 @@ export const versionRouter = createTRPCRouter({
         } catch {
           // If VERSION can't be read, fall back to main
         }
-        const updateScriptUrl = `https://raw.githubusercontent.com/community-scripts/ProxmoxVE-Local/${updateBranch}/update.sh`;
+        const updateScriptUrl = `https://raw.githubusercontent.com/fanhoi/ProxmoxVE-Local/${updateBranch}/update.sh`;
         try {
           const response = await fetch(updateScriptUrl);
           if (response.ok) {

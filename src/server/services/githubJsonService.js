@@ -4,11 +4,12 @@ import { join } from 'path';
 import { repositoryService } from './repositoryService.js';
 import { listDirectory, downloadRawFile } from '../lib/gitProvider/index.js';
 
+// Этот сервис используется для работы с JSON-файлами скриптов с GitHub и локального кэша.
 // Get environment variables
 const getEnv = () => ({
   REPO_BRANCH: process.env.REPO_BRANCH || 'main',
   JSON_FOLDER: process.env.JSON_FOLDER || 'json',
-  REPO_URL: process.env.REPO_URL || 'https://github.com/community-scripts/ProxmoxVE',
+  REPO_URL: process.env.REPO_URL || 'https://github.com/fanhoi/ProxmoxVE',
   GITHUB_TOKEN: process.env.GITHUB_TOKEN
 });
 
