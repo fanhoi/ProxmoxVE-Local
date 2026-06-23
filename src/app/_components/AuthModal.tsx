@@ -11,6 +11,7 @@ interface AuthModalProps {
   isOpen: boolean;
 }
 
+// Этот компонент отображает модальное окно входа (авторизации) пользователя.
 export function AuthModal({ isOpen }: AuthModalProps) {
   const zIndex = useRegisterModal(isOpen, {
     id: "auth-modal",
@@ -31,7 +32,7 @@ export function AuthModal({ isOpen }: AuthModalProps) {
     const success = await login(username, password);
 
     if (!success) {
-      setError("Invalid username or password");
+      setError("Неверное имя пользователя или пароль");
     }
 
     setIsLoading(false);
@@ -51,7 +52,7 @@ export function AuthModal({ isOpen }: AuthModalProps) {
             <div className="flex items-center gap-3">
               <Lock className="text-primary h-8 w-8" />
               <h2 className="text-card-foreground text-2xl font-bold">
-                Authentication Required
+                Требуется авторизация
               </h2>
             </div>
           </div>
@@ -59,7 +60,7 @@ export function AuthModal({ isOpen }: AuthModalProps) {
           {/* Content */}
           <div className="p-6">
             <p className="text-muted-foreground mb-6 text-center">
-              Please enter your credentials to access the application.
+              Пожалуйста, введите свои учетные данные для доступа к приложению.
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -68,14 +69,14 @@ export function AuthModal({ isOpen }: AuthModalProps) {
                   htmlFor="username"
                   className="text-foreground mb-2 block text-sm font-medium"
                 >
-                  Username
+                  Имя пользователя
                 </label>
                 <div className="relative">
                   <User className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform" />
                   <Input
                     id="username"
                     type="text"
-                    placeholder="Enter your username"
+                    placeholder="Введите имя пользователя"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     disabled={isLoading}
@@ -90,14 +91,14 @@ export function AuthModal({ isOpen }: AuthModalProps) {
                   htmlFor="password"
                   className="text-foreground mb-2 block text-sm font-medium"
                 >
-                  Password
+                  Пароль
                 </label>
                 <div className="relative">
                   <Lock className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform" />
                   <Input
                     id="password"
                     type="password"
-                    placeholder="Enter your password"
+                    placeholder="Введите пароль"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     disabled={isLoading}
@@ -119,7 +120,7 @@ export function AuthModal({ isOpen }: AuthModalProps) {
                 disabled={isLoading || !username.trim() || !password.trim()}
                 className="w-full"
               >
-                {isLoading ? "Signing In..." : "Sign In"}
+                {isLoading ? "Вход в систему..." : "Войти"}
               </Button>
             </form>
           </div>

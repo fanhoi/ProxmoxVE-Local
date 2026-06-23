@@ -12,6 +12,7 @@ interface SetupModalProps {
   onComplete: () => void;
 }
 
+// Этот компонент отображает модальное окно первоначальной настройки аутентификации (регистрации администратора).
 export function SetupModal({ isOpen, onComplete }: SetupModalProps) {
   const zIndex = useRegisterModal(isOpen, {
     id: "setup-modal",
@@ -32,7 +33,7 @@ export function SetupModal({ isOpen, onComplete }: SetupModalProps) {
 
     // Only validate passwords if authentication is enabled
     if (enableAuth && password !== confirmPassword) {
-      setError("Passwords do not match");
+      setError("Пароли не совпадают");
       setIsLoading(false);
       return;
     }
@@ -75,11 +76,11 @@ export function SetupModal({ isOpen, onComplete }: SetupModalProps) {
         }
       } else {
         const errorData = (await response.json()) as { error: string };
-        setError(errorData.error ?? "Failed to setup authentication");
+        setError(errorData.error ?? "Не удалось настроить аутентификацию");
       }
     } catch (error) {
       console.error("Setup error:", error);
-      setError("Failed to setup authentication");
+      setError("Не удалось настроить аутентификацию");
     }
 
     setIsLoading(false);
@@ -99,7 +100,7 @@ export function SetupModal({ isOpen, onComplete }: SetupModalProps) {
             <div className="flex items-center gap-3">
               <Shield className="text-success h-8 w-8" />
               <h2 className="text-card-foreground text-2xl font-bold">
-                Setup Authentication
+                Настройка авторизации
               </h2>
             </div>
           </div>
@@ -107,8 +108,7 @@ export function SetupModal({ isOpen, onComplete }: SetupModalProps) {
           {/* Content */}
           <div className="p-6">
             <p className="text-muted-foreground mb-6 text-center">
-              Set up authentication to secure your application. This will be
-              required for future access.
+              Настройте авторизацию для защиты вашего приложения. Это потребуется для доступа в будущем.
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -117,14 +117,14 @@ export function SetupModal({ isOpen, onComplete }: SetupModalProps) {
                   htmlFor="setup-username"
                   className="text-foreground mb-2 block text-sm font-medium"
                 >
-                  Username
+                  Имя пользователя
                 </label>
                 <div className="relative">
                   <User className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform" />
                   <Input
                     id="setup-username"
                     type="text"
-                    placeholder="Choose a username"
+                    placeholder="Выберите имя пользователя"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     disabled={isLoading}
@@ -140,14 +140,14 @@ export function SetupModal({ isOpen, onComplete }: SetupModalProps) {
                   htmlFor="setup-password"
                   className="text-foreground mb-2 block text-sm font-medium"
                 >
-                  Password
+                  Пароль
                 </label>
                 <div className="relative">
                   <Lock className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform" />
                   <Input
                     id="setup-password"
                     type="password"
-                    placeholder="Choose a password"
+                    placeholder="Выберите пароль"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     disabled={isLoading}
@@ -163,14 +163,14 @@ export function SetupModal({ isOpen, onComplete }: SetupModalProps) {
                   htmlFor="confirm-password"
                   className="text-foreground mb-2 block text-sm font-medium"
                 >
-                  Confirm Password
+                  Подтвердите пароль
                 </label>
                 <div className="relative">
                   <Lock className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform" />
                   <Input
                     id="confirm-password"
                     type="password"
-                    placeholder="Confirm your password"
+                    placeholder="Подтвердите ваш пароль"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     disabled={isLoading}
@@ -185,19 +185,19 @@ export function SetupModal({ isOpen, onComplete }: SetupModalProps) {
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="text-foreground mb-1 font-medium">
-                      Enable Authentication
+                      Включить авторизацию
                     </h4>
                     <p className="text-muted-foreground text-sm">
                       {enableAuth
-                        ? "Authentication will be required on every page load"
-                        : "Authentication will be optional (can be enabled later in settings)"}
+                        ? "Авторизация будет требоваться при каждом входе"
+                        : "Авторизация будет необязательной (можно включить позже в настройках)"}
                     </p>
                   </div>
                   <Toggle
                     checked={enableAuth}
                     onCheckedChange={setEnableAuth}
                     disabled={isLoading}
-                    label="Enable authentication"
+                    label="Включить авторизацию"
                   />
                 </div>
               </div>
@@ -220,7 +220,7 @@ export function SetupModal({ isOpen, onComplete }: SetupModalProps) {
                 }
                 className="w-full"
               >
-                {isLoading ? "Setting Up..." : "Complete Setup"}
+                {isLoading ? "Настройка..." : "Завершить настройку"}
               </Button>
             </form>
           </div>

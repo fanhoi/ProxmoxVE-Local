@@ -9,7 +9,7 @@ export class ScriptDownloaderService {
     /** @type {string} */
     this.scriptsDirectory = join(process.cwd(), 'scripts');
     /** @type {string} */
-    this.repoUrl = process.env.REPO_URL || 'https://github.com/fanhoi/ProxmoxVE';
+    this.repoUrl = process.env.REPO_URL || 'https://github.com/community-scripts/ProxmoxVE';
   }
 
   /**
@@ -26,7 +26,7 @@ export class ScriptDownloaderService {
   initializeConfig() {
     // Re-initialize if needed (for environment changes)
     this.scriptsDirectory = join(process.cwd(), 'scripts');
-    this.repoUrl = process.env.REPO_URL || 'https://github.com/fanhoi/ProxmoxVE';
+    this.repoUrl = process.env.REPO_URL || 'https://github.com/community-scripts/ProxmoxVE';
   }
 
   /**

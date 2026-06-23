@@ -68,7 +68,7 @@ export function Footer({ onOpenReleaseNotes }: FooterProps) {
               className="text-muted-foreground hover:text-foreground h-auto gap-1.5 rounded-full px-3 py-1.5 text-xs"
             >
               <a
-                href="https://github.com/fanhoi/ProxmoxVE"
+                href="https://github.com/community-scripts/ProxmoxVE"
                 target="_blank"
                 rel="noopener noreferrer"
               >

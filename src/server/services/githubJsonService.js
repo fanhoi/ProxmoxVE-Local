@@ -9,7 +9,7 @@ import { listDirectory, downloadRawFile } from '../lib/gitProvider/index.js';
 const getEnv = () => ({
   REPO_BRANCH: process.env.REPO_BRANCH || 'main',
   JSON_FOLDER: process.env.JSON_FOLDER || 'json',
-  REPO_URL: process.env.REPO_URL || 'https://github.com/fanhoi/ProxmoxVE',
+  REPO_URL: process.env.REPO_URL || 'https://github.com/community-scripts/ProxmoxVE',
   GITHUB_TOKEN: process.env.GITHUB_TOKEN
 });
 
