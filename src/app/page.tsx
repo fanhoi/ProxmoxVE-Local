@@ -1,5 +1,7 @@
 "use client";
 
+// Это главная страница приложения, которая отрисовывает шапку, переключатель вкладок и соответствующий контент (доступные, скачанные, установленные скрипты, резервные копии и генератор).
+
 import { useState, useEffect, useMemo } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
@@ -280,40 +282,40 @@ function Home() {
       {
         key: "scripts" as const,
         icon: Package,
-        label: "Available Scripts",
-        shortLabel: "Available",
+        label: "Доступные скрипты",
+        shortLabel: "Доступные",
         count: scriptCounts.available,
         help: "available-scripts",
       },
       {
         key: "downloaded" as const,
         icon: HardDrive,
-        label: "Downloaded Scripts",
-        shortLabel: "Downloaded",
+        label: "Загруженные скрипты",
+        shortLabel: "Загруженные",
         count: scriptCounts.downloaded,
         help: "downloaded-scripts",
       },
       {
         key: "installed" as const,
         icon: FolderOpen,
-        label: "Installed Scripts",
-        shortLabel: "Installed",
+        label: "Установленные скрипты",
+        shortLabel: "Установленные",
         count: scriptCounts.installed,
         help: "installed-scripts",
       },
       {
         key: "backups" as const,
         icon: Archive,
-        label: "Backups",
-        shortLabel: "Backups",
+        label: "Резервные копии",
+        shortLabel: "Бэкапы",
         count: scriptCounts.backups,
         help: undefined,
       },
       {
         key: "generator" as const,
         icon: Wand2,
-        label: "Generator",
-        shortLabel: "Generator",
+        label: "Генератор",
+        shortLabel: "Генератор",
         count: undefined,
         help: undefined,
       },
@@ -340,10 +342,10 @@ function Home() {
             </div>
             <div className="flex flex-col leading-tight">
               <span className="text-muted-foreground text-[0.6rem] font-bold tracking-[0.16em] uppercase">
-                Community-Scripts ORG
+                Community-Scripts ORG (Форк fanhoi)
               </span>
               <span className="text-foreground text-sm font-bold">
-                PVE Scripts <span className="text-primary">Management</span>
+                PVE Scripts <span className="text-primary">Локально</span>
               </span>
             </div>
             <div className="hidden items-center gap-2 sm:flex">
