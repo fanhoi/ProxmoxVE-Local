@@ -127,7 +127,7 @@ npm start
 Этот скрипт автоматически создаст LXC и установит приложение для вас.
 
 ```bash
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/fanhoi/ProxmoxVE/main/ct/pve-scripts-local.sh)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/fanhoi/ProxmoxVE-Local/main/pve-scripts-local.sh)"
 ```
 
 ## 🎯 Использование
