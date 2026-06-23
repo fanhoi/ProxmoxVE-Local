@@ -1,531 +1,520 @@
 # PVE Scripts Local 🚀
 
+# Этот репозиторий временно не поддерживается, мы ищем активного мейнтейнера!
 
-# This Repo is dormant, and we are looking for a active Maintainer!
+К сожалению, у текущих мейнтейнеров сейчас не хватает времени на дальнейшее развитие этого инструмента. Мы ищем нового мейнтейнера, который сосредоточится на развитии этого проекта рука об руку с основными разработчиками.
 
-Sadly we Maintainers currently lack the time to further develop this Tool. We are looking for a new Maintainer wich will focus on further developing this tool, Hand in Hand with the core Maintainers. 
+## Проблемы (Issues) всё еще могут решаться, но это может занять несколько недель! В настоящее время мы сосредоточены на основном репозитории скриптов!
 
-## Issues might still get solved, but it also might take a few weeks! We currently focus on the Main Script Repository!
-
-
-
-A modern web-based management interface for Proxmox VE (PVE) helper scripts. This tool provides a user-friendly way to discover, download, and execute community-sourced Proxmox scripts locally with real-time terminal output streaming. No more need for curl -> bash calls, it all happens in your enviroment.
-
+Современный веб-интерфейс управления скриптами-помощниками Proxmox VE (PVE). Этот инструмент предоставляет удобный способ поиска, загрузки и выполнения скриптов Proxmox от сообщества локально с потоковой передачей вывода терминала в реальном времени. Больше нет необходимости вызывать `curl -> bash`, все происходит непосредственно в вашем окружении.
 
 <img width="1725" height="1088" alt="image" src="https://github.com/user-attachments/assets/75323765-7375-4346-a41e-08d219275248" />
 
+## 🎯 Варианты развертывания
 
+Это приложение может быть развернуто несколькими способами в зависимости от вашей среды:
 
-## 🎯 Deployment Options
+- **📦 Контейнер Debian LXC**: Развертывание внутри контейнера Debian LXC для лучшей изоляции.
+- **🔧 Скрипт-помощник**: Использование автоматического скрипта-помощника для простой настройки.
 
-This application can be deployed in multiple ways to suit different environments:
+Все методы развертывания предоставляют одинаковую функциональность и веб-интерфейс.
 
-- **📦 Debian LXC Container**: Deploy inside a Debian LXC container for better isolation
-- **🔧 Helper Script**: Use the automated helper script for easy setup
+## 🌟 Возможности
 
-All deployment methods provide the same functionality and web interface.
+- **Веб-интерфейс**: Современный фронтенд на React/Next.js с эмуляцией терминала в реальном времени.
+- **Поиск скриптов**: Просмотр и поиск скриптов Proxmox от сообщества на GitHub.
+- **Выполнение в один клик**: Запуск скриптов напрямую из веб-интерфейса с отображением вывода в реальном времени.
+- **Терминал реального времени**: Полная эмуляция терминала с помощью xterm.js для интерактивного выполнения скриптов.
+- **Управление скриптами**: Загрузка, обновление и управление локальными коллекциями скриптов.
+- **Безопасность**: Запуск скриптов в песочнице с валидацией путей и ограничением по времени.
+- **Интеграция с базой данных**: SQLite в качестве бэкенда для метаданных скриптов и истории выполнения.
+- **Связь через WebSocket**: Двунаправленная связь в реальном времени для выполнения скриптов.
 
-## 🌟 Features
+## 🏗️ Архитектура
 
-- **Web-based Interface**: Modern React/Next.js frontend with real-time terminal emulation
-- **Script Discovery**: Browse and search through community Proxmox scripts from GitHub
-- **One-Click Execution**: Run scripts directly from the web interface with live output
-- **Real-time Terminal**: Full terminal emulation with xterm.js for interactive script execution
-- **Script Management**: Download, update, and manage local script collections
-- **Security**: Sandboxed script execution with path validation and time limits
-- **Database Integration**: PostgreSQL backend for script metadata and execution history
-- **WebSocket Communication**: Real-time bidirectional communication for script execution
-- 
+### Фронтенд (Frontend)
+- **Next.js 15** с React 19
+- **TypeScript** для типизации и безопасности
+- **Tailwind CSS** для стилизации
+- **xterm.js** для эмуляции терминала
+- **tRPC** для типизированного взаимодействия с API
 
-## 🏗️ Architecture
+### Бэкенд (Backend)
+- Сервер **Node.js** с поддержкой WebSocket
+- **WebSocket Server** для выполнения скриптов в реальном времени
+- **Служба загрузки скриптов** для интеграции с GitHub
 
-### Frontend
-- **Next.js 15** with React 19
-- **TypeScript** for type safety
-- **Tailwind CSS** for styling
-- **xterm.js** for terminal emulation
-- **tRPC** for type-safe API communication
+### Скрипты
+- **Базовые функции**: Общие утилиты и функции сборки
+- **Скрипты контейнеров**: Предустановленные конфигурации LXC-контейнеров
+- **Скрипты установки**: Инструменты настройки и конфигурации системы
 
-### Backend
-- **Node.js** server with WebSocket support
-- **WebSocket Server** for real-time script execution
-- **Script Downloader Service** for GitHub integration
+### База данных
+- **База данных SQLite**: Локальная база данных, хранящаяся в `data/settings.db`
+- **Управление серверами**: Хранит конфигурации и учетные данные серверов Proxmox
+- **Автоматическая настройка**: База данных и таблицы создаются автоматически при первом запуске
+- **Сохранение данных**: Настройки сохраняются при перезапуске приложения
 
-### Scripts
-- **Core Functions**: Shared utilities and build functions
-- **Container Scripts**: Pre-configured LXC container setups
-- **Installation Scripts**: System setup and configuration tools
+## 📋 Требования
 
-### Database
-- **SQLite Database**: Local database stored at `data/settings.db`
-- **Server Management**: Stores Proxmox server configurations and credentials
-- **Automatic Setup**: Database and tables are created automatically on first run
-- **Data Persistence**: Settings persist across application restarts
+### Для всех методов развертывания
+- **Node.js** версии 22+ и npm
+- **Git** для клонирования репозитория
+- **Среда Proxmox VE** (хост или доступ к кластеру Proxmox)
+- **SQLite** (входит в состав пакета Node.js better-sqlite3)
 
-## 📋 Prerequisites
+### Для установки в контейнер Debian LXC
+- **Контейнер Debian LXC** (рекомендуется Debian 11+)
+- **Инструменты сборки (build-essential)**: `apt install build-essential`
+- Контейнер с достаточными ресурсами (минимум 2 ГБ ОЗУ, 4 ГБ диска)
+- Сетевой доступ из контейнера к хосту Proxmox
+- Необязательно: Привилегированный контейнер для полной интеграции с Proxmox
 
-### For All Deployment Methods
-- **Node.js** 22+ and npm
-- **Git** for cloning the repository
-- **Proxmox VE environment** (host or access to Proxmox cluster)
-- **SQLite** (included with Node.js better-sqlite3 package)
+## 🚀 Установка
 
+Выберите метод установки, который лучше всего подходит для вашего окружения:
 
-### For Debian LXC Container Installation
-- **Debian LXC container** (Debian 11+ recommended)
-- **build-essentials**: `apt install build-essential`
-- Container with sufficient resources (2GB RAM, 4GB storage minimum)
-- Network access from container to Proxmox host
-- Optional: Privileged container for full Proxmox integration
+### Вариант 1: Установка в контейнер Debian LXC
 
-## 🚀 Installation
+Для лучшей изоляции и безопасности вы можете запустить PVE Scripts Local внутри контейнера Debian LXC:
 
-Choose the installation method that best fits your environment:
-
-### Option 1: Debian LXC Container Installation
-
-For better isolation and security, you can run PVE Scripts Local inside a Debian LXC container:
-
-#### Step 1: Create Debian LXC Container
+#### Шаг 1: Создайте контейнер Debian LXC
 
 ```bash
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/debian.sh)"
 ```
 
-#### Step 2: Install Dependencies in Container
+#### Шаг 2: Установите зависимости в контейнере
 ```bash
-# Enter the container
+# Войдите в контейнер
 pct enter 100
 
-# Update and install dependencies
+# Обновите пакеты и установите зависимости
 apt update && apt install -y build-essential git curl
 
-# Install Node.js 24.x
+# Установите Node.js 24.x
 curl -fsSL https://deb.nodesource.com/setup_24.x | bash -
 apt install -y nodejs
 ```
 
-#### Step 3: Clone and Setup Application
+#### Шаг 3: Клонируйте и настройте приложение
 ```bash
-# Clone the repository
-git clone https://github.com/community-scripts/ProxmoxVE-Local.git /opt/PVESciptslocal
+# Клонируйте репозиторий
+git clone https://github.com/fanhoi/ProxmoxVE-Local.git /opt/PVESciptslocal
 cd /opt/PVESciptslocal
 
-# Install dependencies and build
+# Установите зависимости и соберите проект
 npm install
 cp .env.example .env
 npm run build
 
-# Create database directory
+# Создайте директорию для базы данных
 mkdir -p data
 chmod 755 data
 ```
 
-#### Step 4: Start the Application
+#### Шаг 4: Запустите приложение
 ```bash
-# Start in production mode
+# Запуск в режиме production
 npm start
 
-# Or create a systemd service (optional)
-# Create systemd service for easy management
+# Или создайте службу systemd (необязательно)
+# Создание службы systemd для удобного управления
 ```
 
-**Access the application:**
-- 🌐 Container IP: `http://<CONTAINER_IP>:3000`
-- 🔧 Container management: `pct start 100`, `pct stop 100`, `pct status 100`
+**Доступ к приложению:**
+- 🌐 IP контейнера: `http://<IP_КОНТЕЙНЕРА>:3000`
+- 🔧 Управление контейнером: `pct start 100`, `pct stop 100`, `pct status 100`
 
-### Option 2: Use the helper script
+### Вариант 2: Использование скрипта-помощника
 
-This creates the LXC and installs the APP for you.
+Этот скрипт автоматически создаст LXC и установит приложение для вас.
 
 ```bash
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/pve-scripts-local.sh)"
 ```
 
-## 🎯 Usage
+## 🎯 Использование
 
-### 1. Access the Web Interface
+### 1. Доступ к веб-интерфейсу
 
-The web interface is accessible regardless of your deployment method:
+Веб-интерфейс доступен независимо от выбранного метода развертывания:
 
-- **LXC Container Installation**: `http://<CONTAINER_IP>:3000`
-- **Custom Installation**: `http://<YOUR_IP>:3000`
+- **Установка в контейнере LXC**: `http://<IP_КОНТЕЙНЕРА>:3000`
+- **Кастомная установка**: `http://<ВАШ_IP>:3000`
 
-### 2. Service Management
+### 2. Управление службой
 
-#### For helper-script installations (systemd service):
+#### Для установки через скрипт-помощник (служба systemd):
 ```bash
-# Start the service
+# Запуск службы
 systemctl start pvescriptslocal
 
-# Stop the service
+# Остановка службы
 systemctl stop pvescriptslocal
 
-# Check service status
+# Проверка статуса службы
 systemctl status pvescriptslocal
 
-# Enable auto-start on boot
+# Включение автозапуска при загрузке системы
 systemctl enable pvescriptslocal
 
-# View service logs
+# Просмотр логов службы
 journalctl -u pvescriptslocal -f
 ```
 
-
-#### For manual installations:
+#### Для ручной установки:
 ```bash
-# Start application
+# Запуск приложения
 npm start
 
-# Development mode
+# Режим разработки
 npm run dev:server
 
-# Build for production
+# Сборка для production
 npm run build
 ```
 
-### 3. Browse Available Scripts
+### 3. Просмотр доступных скриптов
 
-- The main page displays a grid of available Proxmox scripts
-- Use the search functionality to find specific scripts
-- Scripts are categorized by type (containers, installations, etc.)
+- На главной странице отображается сетка доступных скриптов Proxmox.
+- Используйте функцию поиска для нахождения конкретных скриптов.
+- Скрипты классифицируются по типам (контейнеры, установка и т. д.).
 
-### 4. Download Scripts
+### 4. Загрузка скриптов
 
-- Click on any script card to view details
-- Use the "Download" button to fetch scripts from the ProxmoxVE GitHub
-- Downloaded scripts are stored locally in the `scripts/` directory
+- Нажмите на карточку любого скрипта для просмотра подробностей.
+- Используйте кнопку «Загрузить» (Download) для загрузки файлов скрипта из GitHub-репозитория ProxmoxVE.
+- Загруженные скрипты сохраняются локально в директории `scripts/`.
 
-### 5. Execute Scripts
+### 5. Выполнение скриптов
 
-- Click "Run Script" on any downloaded script
-- A terminal window will open with real-time output
-- Interact with the script through the web terminal
-- Use the close button to stop execution
+- Нажмите «Запустить скрипт» (Run Script) на любом загруженном скрипте.
+- Откроется окно терминала с выводом в реальном времени.
+- Взаимодействуйте со скриптом через веб-терминал.
+- Используйте кнопку закрытия для остановки выполнения.
 
-### 6. Script Management
+### 6. Управление скриптами
 
-- View script execution history
-- Update scripts to latest versions
-- Manage local script collections
+- Просмотр истории выполнения скриптов.
+- Обновление скриптов до последних версий.
+- Управление локальными коллекциями скриптов.
 
-### 7. Database Management
+### 7. Управление базой данных
 
-The application uses SQLite for storing server configurations:
+Приложение использует SQLite для хранения настроек серверов:
 
-- **Database Location**: `data/settings.db`
-- **Automatic Creation**: Database and tables are created on first run
-- **Server Storage**: Proxmox server credentials and configurations
-- **Backup**: Copy `data/settings.db` to backup your server configurations
-- **Reset**: Delete `data/settings.db` to reset all server configurations
+- **Расположение базы данных**: `data/settings.db`
+- **Автоматическое создание**: База данных и таблицы создаются при первом запуске.
+- **Хранение серверов**: Учетные данные и конфигурации серверов Proxmox.
+- **Резервное копирование**: Скопируйте `data/settings.db` для сохранения настроек ваших серверов.
+- **Сброс**: Удалите `data/settings.db` для сброса всех настроек серверов.
 
-## 📖 Feature Guide
+## 📖 Руководство по функциям
 
-This section provides detailed information about the application's key features and how to use them effectively.
+В этом разделе приводится подробная информация о ключевых функциях приложения и способах их эффективного использования.
 
-### Server Settings
+### Настройки сервера (Server Settings)
 
-Manage your Proxmox VE servers and configure connection settings.
+Управляйте своими серверами Proxmox VE и настраивайте параметры подключения.
 
-**Adding PVE Servers:**
-- **Server Name**: A friendly name to identify your server
-- **IP Address**: The IP address or hostname of your PVE server
-- **Username**: PVE user account (usually root or a dedicated user)
-- **SSH Port**: Default is 22, change if your server uses a different port
+**Добавление серверов PVE:**
+- **Имя сервера (Server Name)**: Понятное имя для идентификации вашего сервера.
+- **IP-адрес (IP Address)**: IP-адрес или хостнейм вашего сервера PVE.
+- **Имя пользователя (Username)**: Учетная запись пользователя PVE (обычно root или выделенный пользователь).
+- **Порт SSH (SSH Port)**: По умолчанию 22, измените, если ваш сервер использует другой порт.
 
-**Authentication Types:**
-- **Password**: Use username and password authentication
-- **SSH Key**: Use SSH key pair for secure authentication
-- **Both**: Try SSH key first, fallback to password if needed
+**Типы аутентификации:**
+- **Пароль**: Использование имени пользователя и пароля.
+- **SSH-ключ**: Использование пары SSH-ключей для безопасного входа.
+- **Оба**: Сначала пробуется SSH-ключ, при необходимости выполняется откат на пароль.
 
-**Server Color Coding:**
-Assign colors to servers for visual distinction throughout the application. This helps identify which server you're working with when managing scripts. This needs to be enabled in the General Settings.
+**Цветовая кодировка серверов:**
+Назначайте цвета серверам для визуального отличия в интерфейсе приложения. Это помогает понять, с каким сервером вы работаете в данный момент. Функция должна быть включена в Общих настройках.
 
-### General Settings
+### Общие настройки (General Settings)
 
-Configure application preferences and behavior.
+Настройка параметров и поведения приложения.
 
-**Save Filters:**
-When enabled, your script filter preferences (search terms, categories, sorting) will be automatically saved and restored when you return to the application:
-- Search queries are preserved
-- Selected script types are remembered
-- Sort preferences are maintained
-- Category selections are saved
+**Сохранение фильтров (Save Filters):**
+При включении этой опции ваши настройки фильтрации скриптов (поисковые запросы, категории, сортировка) будут автоматически сохраняться и восстанавливаться при возвращении в приложение:
+- Поисковые запросы сохраняются.
+- Выбранные типы скриптов запоминаются.
+- Параметры сортировки поддерживаются.
+- Выбранные категории сохраняются.
 
-**Server Color Coding:**
-Enable visual color coding for servers throughout the application. This makes it easier to identify which server you're working with.
+**Цветовая кодировка серверов (Server Color Coding):**
+Включение визуальной цветовой кодировки серверов по всему приложению. Это упрощает идентификацию активного сервера.
 
-**GitHub Integration:**
-Add a GitHub Personal Access Token to increase API rate limits and improve performance:
-- Bypasses GitHub's rate limiting for unauthenticated requests
-- Improves script loading and syncing performance
-- Token is stored securely and only used for API calls
+**Интеграция с GitHub (GitHub Integration):**
+Добавьте персональный токен доступа GitHub (Personal Access Token) для увеличения лимитов запросов к API и повышения производительности:
+- Обходит ограничения GitHub API для неавторизованных запросов.
+- Ускоряет загрузку и синхронизацию скриптов.
+- Токен хранится безопасно и используется только для вызовов API.
 
-**Authentication:**
-Secure your application with username and password authentication:
-- Set up username and password for app access
-- Enable/disable authentication as needed
-- Credentials are stored securely
+**Аутентификация (Authentication):**
+Обезопасьте свое приложение с помощью аутентификации по логину и паролю:
+- Настройте имя пользователя и пароль для доступа к приложению.
+- Включайте/выключайте авторизацию при необходимости.
+- Учетные данные хранятся в зашифрованном виде.
 
-### Sync Button
+### Кнопка синхронизации (Sync Button)
 
-Synchronize script metadata from the ProxmoxVE GitHub repository.
+Синхронизация метаданных скриптов из GitHub-репозитория ProxmoxVE.
 
-**What Does Syncing Do?**
-- **Updates Script Metadata**: Downloads the latest script information (JSON files)
-- **Refreshes Available Scripts**: Updates the list of scripts you can download
-- **Updates Categories**: Refreshes script categories and organization
-- **Checks for Updates**: Identifies which downloaded scripts have newer versions
+**Что делает синхронизация?**
+- **Обновляет метаданные скриптов**: Загружает последнюю информацию о скриптах (JSON-файлы).
+- **Обновляет список доступных скриптов**: Обновляет список скриптов, которые можно скачать.
+- **Обновляет категории**: Синхронизирует категории скриптов и их структуру.
+- **Проверяет наличие обновлений**: Определяет, для каких из загруженных скриптов доступны более новые версии.
 
-**Important Notes:**
-- **Metadata Only**: Syncing only updates script information, not the actual script files
-- **No Downloads**: Script files are downloaded separately when you choose to install them
-- **Last Sync Time**: Shows when the last successful sync occurred
-- **Rate Limits**: GitHub API limits may apply without a personal access token
+**Важные примечания:**
+- **Только метаданные**: Синхронизация обновляет только информацию о скриптах, но не сами файлы скриптов.
+- **Без скачивания**: Файлы скриптов загружаются отдельно при их непосредственной установке.
+- **Время последней синхронизации**: Отображает время последней успешной синхронизации.
+- **Лимиты запросов**: Без персонального токена могут применяться лимиты GitHub API.
 
-**When to Sync:**
-- When you want to see the latest available scripts
-- To check for updates to your downloaded scripts
-- If you notice scripts are missing or outdated
-- After the ProxmoxVE repository has been updated
+**Когда выполнять синхронизацию:**
+- Когда вы хотите увидеть самые новые доступные скрипты.
+- Для проверки обновлений ваших загруженных скриптов.
+- Если вы заметили, что какие-то скрипты отсутствуют или устарели.
+- После обновления основного репозитория ProxmoxVE.
 
-### Available Scripts
+### Доступные скрипты (Available Scripts)
 
-Browse and discover scripts from the ProxmoxVE repository.
+Просмотр и поиск скриптов в репозитории ProxmoxVE.
 
-**Browsing Scripts:**
-- **Category Sidebar**: Filter scripts by category (Storage, Network, Security, etc.)
-- **Search**: Find scripts by name or description
-- **View Modes**: Switch between card and list view
-- **Sorting**: Sort by name or creation date
+**Просмотр скриптов:**
+- **Боковая панель категорий**: Фильтрация скриптов по категориям (Хранилище, Сеть, Безопасность и т. д.).
+- **Поиск**: Поиск скриптов по названию или описанию.
+- **Режимы отображения**: Переключение между видом карточек и списком.
+- **Сортировка**: Сортировка по имени или дате создания.
 
-**Filtering Options:**
-- **Script Types**: Filter by CT (Container) or other script types
-- **Update Status**: Show only scripts with available updates
-- **Search Query**: Search within script names and descriptions
-- **Categories**: Filter by specific script categories
+**Параметры фильтрации:**
+- **Типы скриптов**: Фильтрация по CT (контейнерам) или другим типам скриптов.
+- **Статус обновления**: Показывать только скрипты с доступными обновлениями.
+- **Поисковый запрос**: Искать в названиях и описаниях скриптов.
+- **Категории**: Фильтрация по конкретным категориям скриптов.
 
-**Script Actions:**
-- **View Details**: Click on a script to see full information and documentation
-- **Download**: Download script files to your local system
-- **Install**: Run scripts directly on your PVE servers
-- **Preview**: View script content before downloading
+**Действия со скриптами:**
+- **Подробнее (View Details)**: Нажмите на скрипт для просмотра полной информации и документации.
+- **Загрузить (Download)**: Загрузка файлов скрипта на локальную систему.
+- **Установить (Install)**: Запуск скриптов непосредственно на ваших серверах PVE.
+- **Предпросмотр (Preview)**: Просмотр содержимого скрипта перед его скачиванием.
 
-### Downloaded Scripts
+### Загруженные скрипты (Downloaded Scripts)
 
-Manage scripts that have been downloaded to your local system.
+Управление скриптами, которые были загружены на вашу локальную систему.
 
-**What Are Downloaded Scripts?**
-These are scripts that you've downloaded from the repository and are stored locally on your system:
-- Script files are stored in your local scripts directory
-- You can run these scripts on your PVE servers
-- Scripts can be updated when newer versions are available
+**Что такое загруженные скрипты?**
+Это скрипты, которые вы скачали из репозитория и которые хранятся локально в вашей системе:
+- Файлы скриптов сохраняются в вашей локальной директории со скриптами.
+- Вы можете запускать эти скрипты на серверах PVE.
+- Скрипты можно обновить при появлении новых версий.
 
-**Update Detection:**
-The system automatically checks if newer versions of your downloaded scripts are available:
-- Scripts with updates available are marked with an update indicator
-- You can filter to show only scripts with available updates
-- Update detection happens when you sync with the repository
+**Обнаружение обновлений:**
+Система автоматически проверяет наличие новых версий ваших локальных скриптов:
+- Скрипты с доступными обновлениями помечаются специальным индикатором.
+- Вы можете отфильтровать список, чтобы показать только скрипты с обновлениями.
+- Проверка обновлений происходит во время синхронизации с репозиторием.
 
-**Managing Downloaded Scripts:**
-- **Update Scripts**: Download the latest version of a script
-- **View Details**: See script information and documentation
-- **Install/Run**: Execute scripts on your PVE servers
-- **Filter & Search**: Use the same filtering options as Available Scripts
+**Управление загруженными скриптами:**
+- **Обновление скриптов**: Загрузка последней версии скрипта.
+- **Подробнее (View Details)**: Просмотр информации о скрипте и документации.
+- **Установка/Запуск**: Выполнение скриптов на серверах PVE.
+- **Фильтрация и поиск**: Использование тех же опций фильтрации, что и для доступных скриптов.
 
-### Installed Scripts
+### Установленные скрипты (Installed Scripts)
 
-Track and manage scripts that are installed on your PVE servers.
+Отслеживание и управление скриптами, установленными на серверах PVE.
 
-**Auto-Detection (Primary Feature):**
-The system can automatically detect LXC containers that have community-script tags on your PVE servers:
-- **Automatic Discovery**: Scans your PVE servers for containers with community-script tags
-- **Container Detection**: Identifies LXC containers running Proxmox helper scripts
-- **Server Association**: Links detected scripts to the specific PVE server
-- **Bulk Import**: Automatically creates records for all detected scripts
+**Автообнаружение (ключевая функция):**
+Система может автоматически обнаруживать LXC-контейнеры на ваших серверах PVE, которые имеют теги скриптов сообщества (`community-script`):
+- **Автоматический поиск**: Сканирует серверы PVE на наличие контейнеров с тегами скриптов сообщества.
+- **Обнаружение контейнеров**: Идентифицирует LXC-контейнеры, работающие под управлением скриптов-помощников Proxmox.
+- **Привязка к серверу**: Связывает обнаруженные скрипты с конкретным сервером PVE.
+- **Массовый импорт**: Автоматически создает записи для всех обнаруженных скриптов.
 
-**How Auto-Detection Works:**
-1. Connects to your configured PVE servers
-2. Scans LXC container configurations
-3. Looks for containers with community-script tags
-4. Creates installed script records automatically
+**Как работает автообнаружение:**
+1. Подключается к настроенным серверам PVE.
+2. Сканирует конфигурации контейнеров LXC.
+3. Ищет контейнеры с тегами `community-script`.
+4. Автоматически создает записи об установленных скриптах.
 
-**Manual Script Management:**
-- **Add Scripts Manually**: Create records for scripts not auto-detected
-- **Edit Script Details**: Update script names and container IDs
-- **Delete Scripts**: Remove scripts from tracking
-- **Bulk Operations**: Clean up old or invalid script records
+**Ручное управление скриптами:**
+- **Добавление скриптов вручную**: Создание записей для скриптов, которые не были обнаружены автоматически.
+- **Редактирование данных скрипта**: Изменение названий скриптов и ID контейнеров.
+- **Удаление скриптов**: Удаление скриптов из списка отслеживания.
+- **Массовые операции**: Очистка старых или недействительных записей скриптов.
 
-**Script Tracking Features:**
-- **Installation Status**: Track success, failure, or in-progress installations
-- **Server Association**: Know which server each script is installed on
-- **Container ID**: Link scripts to specific LXC containers
-- **Web UI Access**: Track and access Web UI IP addresses and ports
-- **Execution Logs**: View output and logs from script installations
-- **Filtering**: Filter by server, status, or search terms
+**Функции отслеживания скриптов:**
+- **Статус установки**: Отслеживание успешных, неудачных или выполняющихся установок.
+- **Привязка к серверу**: Информация о том, на каком сервере установлен каждый скрипт.
+- **ID контейнера**: Связывание скриптов с конкретными контейнерами LXC.
+- **Доступ к Web UI**: Отслеживание и доступ к IP-адресам и портам веб-интерфейсов.
+- **Логи выполнения**: Просмотр вывода и логов установки скриптов.
+- **Фильтрация**: Фильтрация по серверу, статусу или поисковым фразам.
 
-**Managing Installed Scripts:**
-- **View All Scripts**: See all tracked scripts across all servers
-- **Filter by Server**: Show scripts for a specific PVE server
-- **Filter by Status**: Show successful, failed, or in-progress installations
-- **Sort Options**: Sort by name, container ID, server, status, or date
-- **Update Scripts**: Re-run or update existing script installations
+**Управление установленными скриптами:**
+- **Просмотр всех скриптов**: Отображение всех отслеживаемых скриптов на всех серверах.
+- **Фильтрация по серверу**: Показ скриптов только для выбранного сервера PVE.
+- **Фильтрация по статусу**: Отображение успешных, неудачных или активных установок.
+- **Сортировка**: Сортировка по имени, ID контейнера, серверу, статусу или дате.
+- **Обновление скриптов**: Повторный запуск или обновление существующих установленных скриптов.
 
-**Web UI Access:**
-Automatically detect and access Web UI interfaces for your installed scripts:
-- **Auto-Detection**: Automatically detects Web UI URLs from script installation output
-- **IP & Port Tracking**: Stores and displays Web UI IP addresses and ports
-- **One-Click Access**: Click IP:port to open Web UI in new tab
-- **Manual Detection**: Re-detect IP using `hostname -I` inside container
-- **Port Detection**: Uses script metadata to get correct port (e.g., actualbudget:5006)
-- **Editable Fields**: Manually edit IP and port values as needed
+**Доступ к Web UI:**
+Автоматическое определение и доступ к веб-интерфейсам установленных скриптов:
+- **Автоопределение**: Автоматически извлекает URL веб-интерфейса из вывода установки скрипта.
+- **Отслеживание IP и порта**: Сохраняет и отображает IP-адреса и порты Web UI.
+- **Доступ в один клик**: Нажмите на `IP:порт` для открытия веб-интерфейса в новой вкладке.
+- **Ручное определение**: Повторное определение IP с помощью команды `hostname -I` внутри контейнера.
+- **Определение порта**: Использование метаданных скрипта для получения правильного порта (например, `actualbudget:5006`).
+- **Редактируемые поля**: Ручное изменение значений IP-адреса и порта при необходимости.
 
-**Actions Dropdown:**
-Clean interface with all actions organized in a dropdown menu:
-- **Edit Button**: Always visible for quick script editing
-- **Actions Dropdown**: Contains Update, Shell, Open UI, Start/Stop, Destroy, Delete
-- **Smart Visibility**: Dropdown only appears when actions are available
-- **Auto-Close**: Dropdown closes after clicking any action
-- **Disabled States**: Actions are disabled when container is stopped
+**Выпадающее меню действий (Actions):**
+Чистый интерфейс со всеми действиями, организованными в выпадающем меню:
+- **Кнопка редактирования**: Всегда видима для быстрого изменения параметров скрипта.
+- **Меню действий**: Содержит пункты Обновить (Update), Терминал (Shell), Открыть Web UI (Open UI), Запуск/Остановка (Start/Stop), Уничтожить (Destroy), Удалить (Delete).
+- **Умное отображение**: Меню появляется только при наличии доступных действий.
+- **Автозакрытие**: Меню закрывается сразу после выбора любого действия.
+- **Блокировка действий**: Действия отключаются, если контейнер остановлен.
 
-**Container Control:**
-Directly control LXC containers from the installed scripts page via SSH:
-- **Start/Stop Button**: Control container state with `pct start/stop <ID>`
-- **Container Status**: Real-time status indicator (running/stopped/unknown)
-- **Destroy Button**: Permanently remove LXC container with `pct destroy <ID>`
-- **Confirmation Modals**: Simple OK/Cancel for start/stop, type container ID to confirm destroy
-- **SSH Execution**: All commands executed remotely via configured SSH connections
+**Управление контейнерами:**
+Прямое управление контейнерами LXC со страницы установленных скриптов через SSH:
+- **Кнопка Старт/Стоп**: Управление состоянием контейнера с помощью `pct start/stop <ID>`.
+- **Статус контейнера**: Индикатор состояния в реальном времени (работает/остановлен/неизвестно).
+- **Кнопка уничтожения (Destroy)**: Безвозвратное удаление контейнера LXC с помощью `pct destroy <ID>`.
+- **Окна подтверждения**: Простое подтверждение OK/Отмена для запуска/остановки; для уничтожения контейнера требуется ввести его ID.
+- **Выполнение через SSH**: Все команды выполняются удаленно через настроенные SSH-соединения.
 
-**Safety Features:**
-- Start/Stop actions require simple confirmation
-- Destroy action requires typing the container ID to confirm
-- All actions show loading states and error handling
-- Only works with SSH scripts that have valid container IDs
+**Функции безопасности:**
+- Действия запуска и остановки требуют простого подтверждения.
+- Уничтожение контейнера требует ввода ID контейнера для подтверждения.
+- Все действия показывают индикаторы загрузки и содержат обработку ошибок.
+- Работает только для скриптов с настроенным SSH и корректным ID контейнера.
 
-### Update System
+### Система обновлений (Update System)
 
-Keep your PVE Scripts Management application up to date with the latest features and improvements.
+Поддерживайте приложение PVE Scripts Local в актуальном состоянии с помощью новейших функций и улучшений.
 
-**What Does Updating Do?**
-- **Downloads Latest Version**: Fetches the newest release from the GitHub repository
-- **Updates Application Files**: Replaces current files with the latest version
-- **Installs Dependencies**: Updates Node.js packages and dependencies
-- **Rebuilds Application**: Compiles the application with latest changes
-- **Restarts Server**: Automatically restarts the application server
+**Что делает обновление?**
+- **Загружает последнюю версию**: Скачивает новый релиз из репозитория GitHub.
+- **Обновляет файлы приложения**: Заменяет текущие файлы на файлы новой версии.
+- **Устанавливает зависимости**: Обновляет пакеты Node.js и зависимости.
+- **Пересобирает приложение**: Компилирует приложение с учетом последних изменений.
+- **Перезапускает сервер**: Автоматически перезапускает сервер приложения.
 
-**How to Update:**
+**Как обновиться:**
 
-**Automatic Update (Recommended):**
-- Click the "Update Now" button when an update is available
-- The system will handle everything automatically
-- You'll see a progress overlay with update logs
-- The page will reload automatically when complete
+**Автоматическое обновление (рекомендуется):**
+- Нажмите кнопку «Обновить сейчас» (Update Now), когда станет доступно обновление.
+- Система сделает всё автоматически.
+- Вы увидите окно прогресса с логами процесса обновления.
+- Страница автоматически перезагрузится после завершения.
 
-**Manual Update (Advanced):**
-If automatic update fails, you can update manually:
+**Ручное обновление (для опытных пользователей):**
+Если автоматическое обновление не удалось, вы можете обновиться вручную:
 ```bash
-# Navigate to the application directory
+# Перейдите в директорию приложения
 cd $PVESCRIPTLOCAL_DIR
 
-# Pull latest changes
+# Загрузите последние изменения
 git pull
 
-# Install dependencies
+# Установите зависимости
 npm install
 
-# Build the application
+# Соберите приложение
 npm run build
 
-# Start the application
+# Запустите приложение
 npm start
 ```
 
-**Update Process:**
-1. **Check for Updates**: System automatically checks GitHub for new releases
-2. **Download Update**: Downloads the latest release files
-3. **Backup Current Version**: Creates backup of current installation
-4. **Install New Version**: Replaces files and updates dependencies
-5. **Build Application**: Compiles the updated code
-6. **Restart Server**: Stops old server and starts new version
-7. **Reload Page**: Automatically refreshes the browser
+**Процесс обновления:**
+1. **Проверка обновлений**: Система автоматически проверяет GitHub на наличие новых релизов.
+2. **Загрузка обновления**: Скачивает файлы последнего релиза.
+3. **Резервное копирование текущей версии**: Создает резервную копию текущей установки.
+4. **Установка новой версии**: Заменяет файлы и обновляет зависимости.
+5. **Сборка приложения**: Компилирует обновленный код.
+6. **Перезапуск сервера**: Останавливает старый сервер и запускает новую версию.
+7. **Перезагрузка страницы**: Автоматически обновляет страницу в браузере.
 
-**Release Notes:**
-Click the external link icon next to the update button to view detailed release notes on GitHub:
-- See what's new in each version
-- Read about bug fixes and improvements
-- Check for any breaking changes
-- View installation requirements
+**Заметки к релизу (Release Notes):**
+Нажмите на иконку внешней ссылки рядом с кнопкой обновления для просмотра подробностей релиза на GitHub:
+- Узнайте, что нового в каждой версии.
+- Читайте об исправлениях ошибок и улучшениях.
+- Проверяйте наличие критических или ломающих изменений.
+- Ознакомьтесь с требованиями к установке.
 
-**Important Notes:**
-- **Backup**: Your data and settings are preserved during updates
-- **Downtime**: Brief downtime occurs during the update process
-- **Compatibility**: Updates maintain backward compatibility with your data
-- **Rollback**: If issues occur, you can manually revert to previous version
+**Важные примечания:**
+- **Резервная копия**: Ваши данные и настройки сохраняются во время обновлений.
+- **Простой**: Во время процесса обновления веб-интерфейс будет временно недоступен.
+- **Совместимость**: Обновления сохраняют обратную совместимость с вашими данными.
+- **Откат**: В случае возникновения проблем вы можете вручную вернуться к предыдущей версии.
 
-## 📁 Project Structure
+## 📁 Структура проекта
 
 ```
 PVESciptslocal/
-├── scripts/                  # Script collection
-│   ├── core/                 # Core utility functions
-│   │   ├── build.func        # Build system functions
-│   │   ├── tools.func        # Tool installation functions
-│   │   └── create_lxc.sh     # LXC container creation
-│   ├── ct/                   # Container templates 
-│   └── install/              # Installation scripts
-├── src/                      # Source code
-│   ├── app/                  # Next.js app directory
-│   │   ├── _components/      # React components
-│   │   └── page.tsx          # Main page
-│   └── server/               # Server-side code
-│       ├── database.js       # SQLite database service
-│       └── services/         # Business logic services
-├── data/                     # Database storage
-│   └── settings.db           # SQLite database file
-├── public/                   # Static assets
-├── server.js                 # Main server file
-└── package.json              # Dependencies and scripts
+├── scripts/                  # Коллекция скриптов
+│   ├── core/                 # Основные утилитарные функции
+│   │   ├── build.func        # Функции системы сборки
+│   │   ├── tools.func        # Функции установки инструментов
+│   │   └── create_lxc.sh     # Создание контейнера LXC
+│   ├── ct/                   # Шаблоны контейнеров 
+│   └── install/              # Скрипты установки
+├── src/                      # Исходный код
+│   ├── app/                  # Директория Next.js app
+│   │   ├── _components/      # React-компоненты
+│   │   └── page.tsx          # Главная страница
+│   └── server/               # Код на стороне сервера
+│       ├── database.js       # Служба базы данных SQLite
+│       └── services/         # Сервисы бизнес-логики
+├── data/                     # Хранилище базы данных
+│   └── settings.db           # Файл базы данных SQLite
+├── public/                   # Статические ресурсы (assets)
+├── server.js                 # Главный файл сервера
+└── package.json              # Зависимости и скрипты
 ```
 
+## 🚀 Разработка
 
-## 🚀 Development
-
-### Prerequisites for Development
-- Node.js 22+
+### Требования для разработки
+- Node.js версии 22+
 - Git
 
-### Development Commands
+### Команды для разработки
 
 ```bash
-# Install dependencies
+# Установка зависимостей
 npm install
 ```
 
-# Start development server
+# Запуск сервера разработки
 ```bash
 npm run dev:server
 ```
 
-### Project Structure for Developers
+### Структура проекта для разработчиков
 
-- **Frontend**: React components in `src/app/_components/`
-- **Backend**: Server logic in `src/server/`
-- **API**: tRPC routers for type-safe API communication
-- **Scripts**: Bash scripts in `scripts/` directory
+- **Фронтенд**: React-компоненты в `src/app/_components/`
+- **Бэкенд**: Серверная логика в `src/server/`
+- **API**: Роутеры tRPC для типизированного взаимодействия с API
+- **Скрипты**: Скрипты Bash в директории `scripts/`
 
-## 🤝 Contributing
+## 🤝 Участие в разработке (Contributing)
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+1. Сделайте форк репозитория.
+2. Создайте ветку для новой функции (`git checkout -b feature/amazing-feature`).
+3. Зафиксируйте свои изменения (`git commit -m 'Add some amazing feature'`).
+4. Отправьте ветку в репозиторий (`git push origin feature/amazing-feature`).
+5. Откройте Pull Request.
 
+## 📝 Лицензия
 
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Этот проект распространяется под лицензией MIT — подробности см. в файле [LICENSE](LICENSE).
 
 ---
 
-**Note**: This is beta software. Use with caution in production environments and always backup your Proxmox configuration before running scripts.
+**Примечание**: Это бета-версия программного обеспечения. Используйте с осторожностью в продакшн-средах и всегда делайте резервную копию конфигурации Proxmox перед запуском скриптов.
