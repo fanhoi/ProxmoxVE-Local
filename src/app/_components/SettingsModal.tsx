@@ -14,6 +14,7 @@ interface SettingsModalProps {
   onClose: () => void;
 }
 
+// Этот компонент отображает модальное окно настроек серверов Proxmox VE.
 export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   const zIndex = useRegisterModal(isOpen, {
     id: "settings-modal",
@@ -36,16 +37,16 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
     try {
       const response = await fetch("/api/servers");
       if (!response.ok) {
-        throw new Error("Failed to fetch servers");
+        throw new Error("Не удалось получить список серверов");
       }
       const data = await response.json();
-      // Sort servers by name alphabetically
+      // Сортировка серверов по имени в алфавитном порядке
       const sortedServers = (data as Server[]).sort((a, b) =>
         (a.name ?? "").localeCompare(b.name ?? ""),
       );
       setServers(sortedServers);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred");
+      setError(err instanceof Error ? err.message : "Произошла непредвиденная ошибка");
     } finally {
       setLoading(false);
     }
@@ -62,12 +63,12 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to create server");
+        throw new Error("Не удалось добавить сервер");
       }
 
       await fetchServers();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to create server");
+      setError(err instanceof Error ? err.message : "Не удалось добавить сервер");
     }
   };
 
@@ -85,12 +86,12 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to update server");
+        throw new Error("Не удалось обновить сервер");
       }
 
       await fetchServers();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to update server");
+      setError(err instanceof Error ? err.message : "Не удалось обновить сервер");
     }
   };
 
@@ -101,12 +102,12 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to delete server");
+        throw new Error("Не удалось удалить сервер");
       }
 
       await fetchServers();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to delete server");
+      setError(err instanceof Error ? err.message : "Не удалось удалить сервер");
     }
   };
 
@@ -123,11 +124,11 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
           <div className="border-border/60 flex items-center justify-between border-b px-5 py-4 sm:px-6">
             <div className="flex items-center gap-2">
               <h2 className="text-foreground text-lg font-bold tracking-tight sm:text-xl">
-                Server Settings
+                Настройки серверов
               </h2>
               <ContextualHelpIcon
                 section="server-settings"
-                tooltip="Help with Server Settings"
+                tooltip="Помощь по настройке серверов"
               />
             </div>
             <Button
@@ -160,7 +161,7 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                   </div>
                   <div className="ml-2 min-w-0 flex-1 sm:ml-3">
                     <h3 className="text-error-foreground text-xs font-medium sm:text-sm">
-                      Error
+                      Ошибка
                     </h3>
                     <div className="text-error/80 mt-1 text-xs break-words sm:mt-2 sm:text-sm">
                       {error}
@@ -173,20 +174,20 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
             <div className="space-y-4 sm:space-y-6">
               <div>
                 <h3 className="text-foreground mb-3 text-base font-medium sm:mb-4 sm:text-lg">
-                  Server Configurations
+                  Конфигурация серверов
                 </h3>
                 <ServerForm onSubmit={handleCreateServer} />
               </div>
 
               <div>
                 <h3 className="text-foreground mb-3 text-base font-medium sm:mb-4 sm:text-lg">
-                  Saved Servers
+                  Сохранённые серверы
                 </h3>
                 {loading ? (
                   <div className="text-muted-foreground py-8 text-center">
                     <div className="border-primary inline-block h-8 w-8 animate-spin rounded-full border-b-2"></div>
                     <p className="text-muted-foreground mt-2">
-                      Loading servers...
+                      Загрузка серверов...
                     </p>
                   </div>
                 ) : (

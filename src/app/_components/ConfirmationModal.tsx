@@ -17,6 +17,7 @@ interface ConfirmationModalProps {
   cancelButtonText?: string;
 }
 
+// Этот компонент отображает универсальное модальное окно подтверждения действия.
 export function ConfirmationModal({
   isOpen,
   onClose,
@@ -25,8 +26,8 @@ export function ConfirmationModal({
   message,
   variant,
   confirmText,
-  confirmButtonText = "Confirm",
-  cancelButtonText = "Cancel",
+  confirmButtonText = "Подтвердить",
+  cancelButtonText = "Отмена",
 }: ConfirmationModalProps) {
   const [typedText, setTypedText] = useState("");
   const isDanger = variant === "danger";
@@ -82,18 +83,18 @@ export function ConfirmationModal({
             {isDanger && confirmText && (
               <div className="mb-6">
                 <label className="text-foreground mb-2 block text-sm font-medium">
-                  Type{" "}
+                  Введите{" "}
                   <code className="bg-muted rounded px-2 py-1 text-sm">
                     {confirmText}
                   </code>{" "}
-                  to confirm:
+                  для подтверждения:
                 </label>
                 <input
                   type="text"
                   value={typedText}
                   onChange={(e) => setTypedText(e.target.value)}
                   className="border-input bg-background text-foreground placeholder:text-muted-foreground focus:ring-ring focus:border-ring w-full rounded-md border px-3 py-2 focus:ring-2 focus:outline-none"
-                  placeholder={`Type "${confirmText}" here`}
+                  placeholder={`Введите "${confirmText}" здесь`}
                   autoComplete="off"
                 />
               </div>

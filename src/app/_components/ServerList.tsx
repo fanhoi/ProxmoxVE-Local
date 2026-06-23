@@ -9,6 +9,7 @@ import { PublicKeyModal } from './PublicKeyModal';
 import { ServerStoragesModal } from './ServerStoragesModal';
 import { Key, Database } from 'lucide-react';
 
+// Этот компонент отображает список настроенных серверов Proxmox VE с возможностью редактирования, удаления и тестирования подключения.
 interface ServerListProps {
   servers: Server[];
   onUpdate: (id: number, data: CreateServerData) => void;
@@ -56,7 +57,7 @@ export function ServerList({ servers, onUpdate, onDelete }: ServerListProps) {
       const response = await fetch(`/api/servers/${server.id}/public-key`);
       
       if (!response.ok) {
-        throw new Error('Failed to retrieve public key');
+        throw new Error('Не удалось получить публичный ключ');
       }
 
       const data = await response.json() as { success: boolean; publicKey?: string; serverName?: string; serverIp?: string; error?: string };
@@ -69,11 +70,10 @@ export function ServerList({ servers, onUpdate, onDelete }: ServerListProps) {
         });
         setShowPublicKeyModal(true);
       } else {
-        throw new Error(data.error ?? 'Failed to retrieve public key');
+        throw new Error(data.error ?? 'Не удалось получить публичный ключ');
       }
     } catch (error) {
       console.error('Error retrieving public key:', error);
-      // You could show a toast notification here
     }
   };
 
@@ -84,8 +84,8 @@ export function ServerList({ servers, onUpdate, onDelete }: ServerListProps) {
     setConfirmationModal({
       isOpen: true,
       variant: 'danger',
-      title: 'Delete Server',
-      message: `This will permanently delete the server configuration "${server.name}" (${server.ip}) and all associated installed scripts. This action cannot be undone!`,
+      title: 'Удалить сервер',
+      message: `Это безвозвратно удалит конфигурацию сервера "${server.name}" (${server.ip}) и все связанные с ним установленные скрипты. Это действие нельзя отменить!`,
       confirmText: server.name,
       onConfirm: () => {
         onDelete(id);
@@ -116,7 +116,7 @@ export function ServerList({ servers, onUpdate, onDelete }: ServerListProps) {
     } catch {
       setConnectionResults(prev => new Map(prev).set(server.id, {
         success: false,
-        message: 'Failed to test connection - network error'
+        message: 'Не удалось проверить соединение — ошибка сети'
       }));
     } finally {
       setTestingConnections(prev => {
@@ -133,8 +133,8 @@ export function ServerList({ servers, onUpdate, onDelete }: ServerListProps) {
         <svg className="mx-auto h-12 w-12 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
         </svg>
-        <h3 className="mt-2 text-sm font-medium text-foreground">No servers configured</h3>
-        <p className="mt-1 text-sm text-muted-foreground">Get started by adding a new server configuration above.</p>
+        <h3 className="mt-2 text-sm font-medium text-foreground">Нет настроенных серверов</h3>
+        <p className="mt-1 text-sm text-muted-foreground">Начните с добавления новой конфигурации сервера выше.</p>
       </div>
     );
   }
@@ -149,7 +149,7 @@ export function ServerList({ servers, onUpdate, onDelete }: ServerListProps) {
         >
           {editingId === server.id ? (
             <div>
-              <h4 className="text-lg font-medium text-foreground mb-4">Edit Server</h4>
+              <h4 className="text-lg font-medium text-foreground mb-4">Редактировать сервер</h4>
               <ServerForm
                 initialData={{
                   name: server.name,
@@ -195,9 +195,9 @@ export function ServerList({ servers, onUpdate, onDelete }: ServerListProps) {
                       </span>
                     </div>
                     <div className="mt-1 text-xs text-muted-foreground">
-                      Created: {server.created_at ? new Date(server.created_at).toLocaleDateString() : 'Unknown'}
+                      Создан: {server.created_at ? new Date(server.created_at).toLocaleDateString() : 'Неизвестно'}
                       {server.updated_at && server.updated_at !== server.created_at && (
-                        <span> • Updated: {new Date(server.updated_at).toLocaleDateString()}</span>
+                        <span> • Обновлен: {new Date(server.updated_at).toLocaleDateString()}</span>
                       )}
                     </div>
                     
@@ -219,7 +219,7 @@ export function ServerList({ servers, onUpdate, onDelete }: ServerListProps) {
                             </svg>
                           )}
                           <span className="font-medium">
-                            {connectionResults.get(server.id)?.success ? 'Connection Successful' : 'Connection Failed'}
+                            {connectionResults.get(server.id)?.success ? 'Соединение успешно установлено' : 'Ошибка соединения'}
                           </span>
                         </div>
                         <p className="mt-1">{connectionResults.get(server.id)?.message}</p>
@@ -241,16 +241,16 @@ export function ServerList({ servers, onUpdate, onDelete }: ServerListProps) {
                       <svg className="w-4 h-4 mr-1 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                       </svg>
-                      <span className="hidden sm:inline">Testing...</span>
-                      <span className="sm:hidden">Test...</span>
+                      <span className="hidden sm:inline">Проверка...</span>
+                      <span className="sm:hidden">Тест...</span>
                     </>
                   ) : (
                     <>
                       <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
-                      <span className="hidden sm:inline">Test Connection</span>
-                      <span className="sm:hidden">Test</span>
+                      <span className="hidden sm:inline">Проверить соединение</span>
+                      <span className="sm:hidden">Тест</span>
                     </>
                   )}
                 </Button>
@@ -264,8 +264,8 @@ export function ServerList({ servers, onUpdate, onDelete }: ServerListProps) {
                   className="w-full sm:w-auto border-info/20 text-info bg-info/10 hover:bg-info/20"
                 >
                   <Database className="w-4 h-4 mr-1" />
-                  <span className="hidden sm:inline">View Storages</span>
-                  <span className="sm:hidden">Storages</span>
+                  <span className="hidden sm:inline">Просмотр хранилищ</span>
+                  <span className="sm:hidden">Хранилища</span>
                 </Button>
                 <div className="flex space-x-2">
                   {/* View Public Key button - only show for generated keys */}
@@ -277,8 +277,8 @@ export function ServerList({ servers, onUpdate, onDelete }: ServerListProps) {
                       className="flex-1 sm:flex-none border-info/20 text-info bg-info/10 hover:bg-info/20"
                     >
                       <Key className="w-4 h-4 mr-1" />
-                      <span className="hidden sm:inline">View Public Key</span>
-                      <span className="sm:hidden">Key</span>
+                      <span className="hidden sm:inline">Показать публичный ключ</span>
+                      <span className="sm:hidden">Ключ</span>
                     </Button>
                   )}
                   <Button
@@ -290,7 +290,7 @@ export function ServerList({ servers, onUpdate, onDelete }: ServerListProps) {
                     <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                     </svg>
-                    <span className="hidden sm:inline">Edit</span>
+                    <span className="hidden sm:inline">Редактировать</span>
                     <span className="sm:hidden">✏️</span>
                   </Button>
                   <Button
@@ -302,7 +302,7 @@ export function ServerList({ servers, onUpdate, onDelete }: ServerListProps) {
                     <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                     </svg>
-                    <span className="hidden sm:inline">Delete</span>
+                    <span className="hidden sm:inline">Удалить</span>
                     <span className="sm:hidden">🗑️</span>
                   </Button>
                 </div>
@@ -322,8 +322,8 @@ export function ServerList({ servers, onUpdate, onDelete }: ServerListProps) {
           message={confirmationModal.message}
           variant={confirmationModal.variant}
           confirmText={confirmationModal.confirmText}
-          confirmButtonText="Delete Server"
-          cancelButtonText="Cancel"
+          confirmButtonText="Удалить"
+          cancelButtonText="Отмена"
         />
       )}
       

@@ -58,6 +58,7 @@ interface AppearanceModalProps {
   onClose: () => void;
 }
 
+// Этот компонент отображает модальное окно настройки внешнего вида (тема, размер текста, ширина макета).
 export function AppearanceModal({ isOpen, onClose }: AppearanceModalProps) {
   const zIndex = useRegisterModal(isOpen, {
     id: "appearance-modal",
@@ -97,7 +98,7 @@ export function AppearanceModal({ isOpen, onClose }: AppearanceModalProps) {
                 <Paintbrush className="text-primary h-4 w-4" />
               </div>
               <h2 className="text-foreground text-lg font-bold tracking-tight">
-                Appearance
+                Внешний вид
               </h2>
             </div>
             <Button
@@ -105,7 +106,7 @@ export function AppearanceModal({ isOpen, onClose }: AppearanceModalProps) {
               variant="ghost"
               size="icon"
               className="h-7 w-7 rounded-full"
-              aria-label="Close appearance settings"
+              aria-label="Закрыть настройки внешнего вида"
             >
               <X className="h-4 w-4" />
             </Button>
@@ -116,12 +117,12 @@ export function AppearanceModal({ isOpen, onClose }: AppearanceModalProps) {
             {/* Theme */}
             <div>
               <h3 className="text-foreground mb-2.5 text-sm font-semibold">
-                Theme
+                Тема оформления
               </h3>
               <div className="flex gap-2">
                 {[
-                  { value: "light" as const, label: "Light", Icon: Sun },
-                  { value: "dark" as const, label: "Dark", Icon: Moon },
+                  { value: "light" as const, label: "Светлая", Icon: Sun },
+                  { value: "dark" as const, label: "Тёмная", Icon: Moon },
                 ].map(({ value, label, Icon }) => (
                   <button
                     key={value}
@@ -143,13 +144,13 @@ export function AppearanceModal({ isOpen, onClose }: AppearanceModalProps) {
             <div>
               <h3 className="text-foreground mb-2.5 flex items-center gap-2 text-sm font-semibold">
                 <Type className="h-3.5 w-3.5" />
-                Text Size
+                Размер шрифта
               </h3>
               <div className="flex gap-2">
                 {[
-                  { value: "small" as const, label: "Small" },
-                  { value: "medium" as const, label: "Medium" },
-                  { value: "large" as const, label: "Large" },
+                  { value: "small" as const, label: "Мелкий" },
+                  { value: "medium" as const, label: "Средний" },
+                  { value: "large" as const, label: "Крупный" },
                 ].map(({ value, label }) => (
                   <button
                     key={value}
@@ -172,19 +173,19 @@ export function AppearanceModal({ isOpen, onClose }: AppearanceModalProps) {
             {/* Layout Width */}
             <div>
               <h3 className="text-foreground mb-2.5 text-sm font-semibold">
-                Layout Width
+                Ширина макета
               </h3>
               <div className="flex gap-2">
                 {[
                   {
                     value: "default" as const,
-                    label: "Default",
+                    label: "Стандартная",
                     sub: "1440px",
                     Icon: Minimize2,
                   },
                   {
                     value: "full" as const,
-                    label: "Wide",
+                    label: "Широкая",
                     sub: "1800px",
                     Icon: Maximize2,
                   },
@@ -214,3 +215,4 @@ export function AppearanceModal({ isOpen, onClose }: AppearanceModalProps) {
     </ModalPortal>
   );
 }
+

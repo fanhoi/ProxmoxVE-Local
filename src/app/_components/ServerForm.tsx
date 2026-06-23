@@ -14,6 +14,7 @@ interface ServerFormProps {
   onCancel?: () => void;
 }
 
+// Этот компонент отображает форму добавления или редактирования конфигурации сервера Proxmox VE.
 export function ServerForm({
   onSubmit,
   initialData,
@@ -124,20 +125,20 @@ export function ServerForm({
     const newErrors: Partial<Record<keyof CreateServerData, string>> = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = "Server name is required";
+      newErrors.name = "Имя сервера обязательно для заполнения";
     }
 
     if (!formData.ip.trim()) {
-      newErrors.ip = "Server address is required";
+      newErrors.ip = "Адрес сервера обязателен для заполнения";
     } else {
       if (!validateServerAddress(formData.ip)) {
         newErrors.ip =
-          "Please enter a valid IP address (IPv4/IPv6) or hostname";
+          "Введите корректный IP-адрес (IPv4/IPv6) или имя хоста";
       }
     }
 
     if (!formData.user.trim()) {
-      newErrors.user = "Username is required";
+      newErrors.user = "Имя пользователя обязательно для заполнения";
     }
 
     // Validate SSH port
@@ -145,7 +146,7 @@ export function ServerForm({
       formData.ssh_port !== undefined &&
       (formData.ssh_port < 1 || formData.ssh_port > 65535)
     ) {
-      newErrors.ssh_port = "SSH port must be between 1 and 65535";
+      newErrors.ssh_port = "Порт SSH должен быть в диапазоне от 1 до 65535";
     }
 
     // Validate authentication based on auth_type
@@ -153,13 +154,13 @@ export function ServerForm({
 
     if (authType === "password") {
       if (!formData.password?.trim()) {
-        newErrors.password = "Password is required for password authentication";
+        newErrors.password = "Пароль обязателен для авторизации по паролю";
       }
     }
 
     if (authType === "key") {
       if (!formData.ssh_key?.trim()) {
-        newErrors.ssh_key = "SSH key is required for key authentication";
+        newErrors.ssh_key = "SSH-ключ обязателен для авторизации по ключу";
       }
     }
 
@@ -231,7 +232,7 @@ export function ServerForm({
       });
 
       if (!response.ok) {
-        throw new Error("Failed to generate key pair");
+        throw new Error("Не удалось сгенерировать пару ключей");
       }
 
       const data = (await response.json()) as {
@@ -258,12 +259,12 @@ export function ServerForm({
         setShowPublicKeyModal(true);
         setSshKeyError("");
       } else {
-        throw new Error(data.error ?? "Failed to generate key pair");
+        throw new Error(data.error ?? "Не удалось сгенерировать пару ключей");
       }
     } catch (error) {
       console.error("Error generating key pair:", error);
       setSshKeyError(
-        error instanceof Error ? error.message : "Failed to generate key pair",
+        error instanceof Error ? error.message : "Не удалось сгенерировать пару ключей",
       );
     } finally {
       setIsGeneratingKey(false);
@@ -286,7 +287,7 @@ export function ServerForm({
               htmlFor="name"
               className="text-muted-foreground mb-1 block text-sm font-medium"
             >
-              Server Name *
+              Имя сервера *
             </label>
             <input
               type="text"
@@ -296,7 +297,7 @@ export function ServerForm({
               className={`bg-card text-foreground placeholder-muted-foreground focus:ring-ring focus:border-ring w-full rounded-md border px-3 py-2 shadow-sm focus:ring-2 focus:outline-none ${
                 errors.name ? "border-destructive" : "border-border"
               }`}
-              placeholder="e.g., Production Server"
+              placeholder="например, Основной сервер"
             />
             {errors.name && (
               <p className="text-destructive mt-1 text-sm">{errors.name}</p>
@@ -308,7 +309,7 @@ export function ServerForm({
               htmlFor="ip"
               className="text-muted-foreground mb-1 block text-sm font-medium"
             >
-              Host/IP Address *
+              Хост/IP-адрес *
             </label>
             <input
               type="text"
@@ -318,7 +319,7 @@ export function ServerForm({
               className={`bg-card text-foreground placeholder-muted-foreground focus:ring-ring focus:border-ring w-full rounded-md border px-3 py-2 shadow-sm focus:ring-2 focus:outline-none ${
                 errors.ip ? "border-destructive" : "border-border"
               }`}
-              placeholder="e.g., 192.168.1.100, server.example.com, 2001:db8::1, or fe80::...%eth0"
+              placeholder="например, 192.168.1.100, server.local или fe80::...%eth0"
             />
             {errors.ip && (
               <p className="text-destructive mt-1 text-sm">{errors.ip}</p>
@@ -330,7 +331,7 @@ export function ServerForm({
               htmlFor="user"
               className="text-muted-foreground mb-1 block text-sm font-medium"
             >
-              Username *
+              Имя пользователя *
             </label>
             <input
               type="text"
@@ -340,7 +341,7 @@ export function ServerForm({
               className={`bg-card text-foreground placeholder-muted-foreground focus:ring-ring focus:border-ring w-full rounded-md border px-3 py-2 shadow-sm focus:ring-2 focus:outline-none ${
                 errors.user ? "border-destructive" : "border-border"
               }`}
-              placeholder="e.g., root"
+              placeholder="например, root"
             />
             {errors.user && (
               <p className="text-destructive mt-1 text-sm">{errors.user}</p>
@@ -352,7 +353,7 @@ export function ServerForm({
               htmlFor="ssh_port"
               className="text-muted-foreground mb-1 block text-sm font-medium"
             >
-              SSH Port
+              Порт SSH
             </label>
             <input
               type="number"
@@ -379,7 +380,7 @@ export function ServerForm({
               htmlFor="auth_type"
               className="text-muted-foreground mb-1 block text-sm font-medium"
             >
-              Authentication Type *
+              Тип авторизации *
             </label>
             <select
               id="auth_type"
@@ -387,8 +388,8 @@ export function ServerForm({
               onChange={handleChange("auth_type")}
               className="bg-card text-foreground focus:ring-ring focus:border-ring border-border w-full rounded-md border px-3 py-2 shadow-sm focus:ring-2 focus:outline-none"
             >
-              <option value="password">Password Only</option>
-              <option value="key">SSH Key Only</option>
+              <option value="password">Только пароль</option>
+              <option value="key">Только SSH-ключ</option>
             </select>
           </div>
 
@@ -398,7 +399,7 @@ export function ServerForm({
                 htmlFor="color"
                 className="text-muted-foreground mb-1 block text-sm font-medium"
               >
-                Server Color
+                Цвет сервера
               </label>
               <div className="flex items-center gap-3">
                 <input
@@ -409,7 +410,7 @@ export function ServerForm({
                   className="border-border h-10 w-20 cursor-pointer rounded border"
                 />
                 <span className="text-muted-foreground text-sm">
-                  Choose a color to identify this server
+                  Выберите цвет для визуальной идентификации этого сервера
                 </span>
               </div>
             </div>
@@ -423,7 +424,7 @@ export function ServerForm({
               htmlFor="password"
               className="text-muted-foreground mb-1 block text-sm font-medium"
             >
-              Password *
+              Пароль *
             </label>
             <input
               type="password"
@@ -433,15 +434,14 @@ export function ServerForm({
               className={`bg-card text-foreground placeholder-muted-foreground focus:ring-ring focus:border-ring w-full rounded-md border px-3 py-2 shadow-sm focus:ring-2 focus:outline-none ${
                 errors.password ? "border-destructive" : "border-border"
               }`}
-              placeholder="Enter password"
+              placeholder="Введите пароль"
             />
             {errors.password && (
               <p className="text-destructive mt-1 text-sm">{errors.password}</p>
             )}
             <p className="text-muted-foreground mt-1 text-xs">
-              SSH key is recommended when possible. Special characters (e.g.{" "}
-              <code className="rounded bg-muted px-0.5">{"{ } $ \" '"}</code>) are
-              supported.
+              Рекомендуется использовать SSH-ключ по возможности. Специальные символы (например,{" "}
+              <code className="rounded bg-muted px-0.5">{"{ } $ \" '"}</code>) поддерживаются.
             </p>
           </div>
         )}
@@ -452,7 +452,7 @@ export function ServerForm({
             <div>
               <div className="mb-1 flex items-center justify-between">
                 <label className="text-muted-foreground block text-sm font-medium">
-                  SSH Private Key *
+                  Закрытый SSH-ключ *
                 </label>
                 <Button
                   type="button"
@@ -463,7 +463,7 @@ export function ServerForm({
                   className="gap-2"
                 >
                   <Key className="h-4 w-4" />
-                  {isGeneratingKey ? "Generating..." : "Generate Key Pair"}
+                  {isGeneratingKey ? "Генерация..." : "Сгенерировать пару ключей"}
                 </Button>
               </div>
 
@@ -500,14 +500,14 @@ export function ServerForm({
                         viewBox="0 0 24 24"
                       >
                         <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
+                           strokeLinecap="round"
+                           strokeLinejoin="round"
+                           strokeWidth={2}
                           d="M5 13l4 4L19 7"
                         />
                       </svg>
                       <span className="text-success-foreground text-sm font-medium">
-                        SSH key pair generated successfully
+                        Пара SSH-ключей успешно сгенерирована
                       </span>
                     </div>
                     <Button
@@ -518,12 +518,11 @@ export function ServerForm({
                       className="border-info/20 text-info bg-info/10 hover:bg-info/20 gap-2"
                     >
                       <Key className="h-4 w-4" />
-                      View Public Key
+                      Показать публичный ключ
                     </Button>
                   </div>
                   <p className="text-success/80 mt-1 text-xs">
-                    The private key has been generated and will be saved with
-                    the server.
+                    Закрытый ключ сгенерирован и будет сохранен вместе с сервером.
                   </p>
                 </div>
               )}
@@ -534,7 +533,7 @@ export function ServerForm({
                 htmlFor="ssh_key_passphrase"
                 className="text-muted-foreground mb-1 block text-sm font-medium"
               >
-                SSH Key Passphrase (Optional)
+                Кодовая фраза SSH-ключ (необязательно)
               </label>
               <input
                 type="password"
@@ -542,10 +541,10 @@ export function ServerForm({
                 value={formData.ssh_key_passphrase ?? ""}
                 onChange={handleChange("ssh_key_passphrase")}
                 className="bg-card text-foreground placeholder-muted-foreground focus:ring-ring focus:border-ring border-border w-full rounded-md border px-3 py-2 shadow-sm focus:ring-2 focus:outline-none"
-                placeholder="Enter passphrase for encrypted key"
+                placeholder="Введите кодовую фразу для зашифрованного ключа"
               />
               <p className="text-muted-foreground mt-1 text-xs">
-                Only required if your SSH key is encrypted with a passphrase
+                Требуется только в том случае, если ваш SSH-ключ зашифрован кодовой фразой
               </p>
             </div>
           </div>
@@ -560,7 +559,7 @@ export function ServerForm({
               size="default"
               className="order-2 w-full sm:order-1 sm:w-auto"
             >
-              Cancel
+              Отмена
             </Button>
           )}
           <Button
@@ -569,7 +568,7 @@ export function ServerForm({
             size="default"
             className="order-1 w-full sm:order-2 sm:w-auto"
           >
-            {isEditing ? "Update Server" : "Add Server"}
+            {isEditing ? "Обновить сервер" : "Добавить сервер"}
           </Button>
         </div>
       </form>
@@ -579,7 +578,7 @@ export function ServerForm({
         isOpen={showPublicKeyModal}
         onClose={() => setShowPublicKeyModal(false)}
         publicKey={generatedPublicKey}
-        serverName={formData.name || "New Server"}
+        serverName={formData.name || "Новый сервер"}
         serverIp={formData.ip}
       />
     </>
